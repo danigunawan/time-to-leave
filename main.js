@@ -196,6 +196,7 @@ function createWindow() {
                         });
                     },
                 },
+                {type: 'separator'},
                 {
                     label: 'Export database',
                     click() {
