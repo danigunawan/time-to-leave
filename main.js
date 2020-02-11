@@ -209,9 +209,10 @@ function createWindow() {
                               {name: 'All Files', extensions: ['*']}
                             ]
                         };
-                        dialog.showSaveDialog( options, (filename) => {
-                            exportDatabaseToFile(filename);
-                        });
+                        let response = dialog.showSaveDialogSync(options);
+                        if (response) {
+                            exportDatabaseToFile(response);
+                        }
                     },
                 },
                 {
