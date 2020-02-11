@@ -2,6 +2,7 @@ const { app, BrowserWindow, dialog, ipcMain, Menu, net, shell, Tray } = require(
 const path = require('path');
 const Store = require('electron-store');
 const isOnline = require('is-online');
+const { exportDatabaseToFile } = require('./js/import-export.js');
 const { notify } = require('./js/notification');
 const { getDateStr } = require('./js/date-aux.js');
 const { savePreferences } = require('./js/user-preferences.js');
@@ -192,6 +193,24 @@ function createWindow() {
                             prefWindow = null;
                             savePreferences(savedPreferences);
                             win.webContents.send('PREFERENCE_SAVED', savedPreferences);
+                        });
+                    },
+                },
+                {
+                    label: 'Export database',
+                    click() {
+                        var options = {
+                            title: 'Export DB to file',
+                            defaultPath : 'time_to_leave',
+                            buttonLabel : 'Export',
+                  
+                            filters :[
+                              {name: '.ttldb', extensions: ['ttldb',]},
+                              {name: 'All Files', extensions: ['*']}
+                            ]
+                        };
+                        dialog.showSaveDialog( options, (filename) => {
+                            exportDatabaseToFile(filename);
                         });
                     },
                 },
