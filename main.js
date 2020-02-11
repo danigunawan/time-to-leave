@@ -212,6 +212,14 @@ function createWindow() {
                         let response = dialog.showSaveDialogSync(options);
                         if (response) {
                             exportDatabaseToFile(response);
+                            dialog.showMessageBox(BrowserWindow.getFocusedWindow(),
+                                {
+                                    title: 'Time to Leave',
+                                    message: 'Database export',
+                                    type: 'info',
+                                    icon: iconpath,
+                                    detail: '\Okay, database was exported.'
+                                });
                         }
                     },
                 },
