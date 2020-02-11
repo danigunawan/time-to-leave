@@ -56,6 +56,26 @@ function exportDatabaseToFile(filename) {
     fs.writeFileSync(filename, JSON.stringify(information, null,'\t'), 'utf-8');
 }
 
+function importDatabaseFromFile(filename) {
+    const information = JSON.parse(fs.readFileSync(filename[0], 'utf-8'));
+    for (var i = 0; i < information.length; ++i) {
+        var entry = information[i];
+        if (entry.type === 'waived') {
+            waivedWorkdays.set(entry.date, { 'reason' : entry.data, 'hours' : entry.hours });
+        } else if (entry.type === 'regular') {
+            var [year, month, day] = entry.date.split('-');
+            //The main database uses a JS-based month index (0-11)
+            //So we need to adjust it from human month index (1-12)
+            var date = year + '-' + (month - 1) + '-' + day;
+            var key = date + '-' + entry.data;
+            store.set(key, entry.hours);
+        } else {
+            //ERROR
+        }
+    }
+}
+
 module.exports = {
+    importDatabaseFromFile,
     exportDatabaseToFile
 };
