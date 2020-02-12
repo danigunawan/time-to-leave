@@ -240,14 +240,14 @@ function createWindow() {
                         if (response) {
                             const options = {
                                 type: 'question',
-                                buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+                                buttons: ['Yes, please', 'No, thanks'],
                                 defaultId: 2,
                                 title: 'Import database',
                                 message: 'Are you sure you want to import a database? It may override your information.',
                             };
     
                             let confirmation = dialog.showMessageBoxSync(BrowserWindow.getFocusedWindow(), options);
-                            if (confirmation === 1) {
+                            if (confirmation === /*Yes*/0) {
                                 if (importDatabaseFromFile(response)) {
                                     dialog.showMessageBox(BrowserWindow.getFocusedWindow(),
                                         {
