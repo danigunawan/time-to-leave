@@ -205,7 +205,7 @@ function createWindow() {
                             defaultPath : 'time_to_leave',
                             buttonLabel : 'Export',
                   
-                            filters :[
+                            filters : [
                                 { name: '.ttldb', extensions: ['ttldb',] },
                                 { name: 'All Files', extensions: ['*'] }
                             ]
@@ -231,7 +231,7 @@ function createWindow() {
                             title: 'Import DB from file',
                             buttonLabel : 'Import',
                   
-                            filters :[
+                            filters : [
                               {name: '.ttldb', extensions: ['ttldb',]},
                               {name: 'All Files', extensions: ['*']}
                             ]
@@ -243,7 +243,7 @@ function createWindow() {
                                 buttons: ['Yes, please', 'No, thanks'],
                                 defaultId: 2,
                                 title: 'Import database',
-                                message: 'Are you sure you want to import a database? It may override your information.',
+                                message: 'Are you sure you want to import a database? It will override any current information.',
                             };
     
                             let confirmation = dialog.showMessageBoxSync(BrowserWindow.getFocusedWindow(), options);
@@ -260,6 +260,15 @@ function createWindow() {
                                 }
                                 // Reload only the calendar itself to avoid a flash
                                 win.webContents.executeJavaScript('calendar.redraw()');
+                                dialog.showMessageBox(BrowserWindow.getFocusedWindow(),
+                                    {
+                                        title: 'Time to Leave',
+                                        message: 'Database imported',
+                                        type: 'info',
+                                        icon: iconpath,
+                                        detail: '\Yay! Import successful!'
+                                    }
+                                );
                             }
                         }
                     },
