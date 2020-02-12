@@ -231,7 +231,7 @@ function createWindow() {
                             title: 'Import DB from file',
                             buttonLabel : 'Import',
                   
-                            filters :[
+                            filters : [
                               {name: '.ttldb', extensions: ['ttldb',]},
                               {name: 'All Files', extensions: ['*']}
                             ]
