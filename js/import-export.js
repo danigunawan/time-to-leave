@@ -1,5 +1,7 @@
 const Store = require('electron-store');
 const fs = require('fs');
+const { dialog } = require('electron');
+const { validateTime } = require('./time-math.js');
 
 const store = new Store();
 const waivedWorkdays = new Store({name: 'waived-workdays'});
@@ -56,10 +58,33 @@ function exportDatabaseToFile(filename) {
     fs.writeFileSync(filename, JSON.stringify(information, null,'\t'), 'utf-8');
 }
 
+function validateDate(dateStr) {
+    var date = new Date(dateStr);
+    return date instanceof Date && !isNaN(date);
+}
+
+function validEntry(entry) {
+    if (!entry.hasOwnProperty('type') || 
+        !entry.hasOwnProperty('date') || 
+        !entry.hasOwnProperty('data') ||
+        !entry.hasOwnProperty('hours') ||
+        !(entry.type === 'regular' || entry.type === 'waived') ||
+        !validateTime(entry.hours) ||
+        !validateDate(entry.date)) {
+        return false;
+    }
+    return true;
+}
+
 function importDatabaseFromFile(filename) {
     const information = JSON.parse(fs.readFileSync(filename[0], 'utf-8'));
+    var failedEntries = 0;
     for (var i = 0; i < information.length; ++i) {
         var entry = information[i];
+        if (!validEntry(entry)) {
+            failedEntries += 1;
+            continue;
+        }
         if (entry.type === 'waived') {
             waivedWorkdays.set(entry.date, { 'reason' : entry.data, 'hours' : entry.hours });
         } else if (entry.type === 'regular') {
@@ -69,10 +94,19 @@ function importDatabaseFromFile(filename) {
             var date = year + '-' + (month - 1) + '-' + day;
             var key = date + '-' + entry.data;
             store.set(key, entry.hours);
-        } else {
-            //ERROR
         }
     }
+
+    if (failedEntries !== 0) {
+        const message = failedEntries + ' out of ' + information.length + ' could not be loaded.';
+        dialog.showMessageBoxSync({
+            type: 'warning',
+            title: 'Failed entries',
+            message: message
+        });
+        return false;
+    }
+    return true;
 }
 
 module.exports = {
