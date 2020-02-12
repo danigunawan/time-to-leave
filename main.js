@@ -206,8 +206,8 @@ function createWindow() {
                             buttonLabel : 'Export',
                   
                             filters :[
-                              {name: '.ttldb', extensions: ['ttldb',]},
-                              {name: 'All Files', extensions: ['*']}
+                                { name: '.ttldb', extensions: ['ttldb',] },
+                                { name: 'All Files', extensions: ['*'] }
                             ]
                         };
                         let response = dialog.showSaveDialogSync(options);
