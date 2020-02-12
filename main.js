@@ -205,7 +205,7 @@ function createWindow() {
                             defaultPath : 'time_to_leave',
                             buttonLabel : 'Export',
                   
-                            filters :[
+                            filters : [
                               {name: '.ttldb', extensions: ['ttldb',]},
                               {name: 'All Files', extensions: ['*']}
                             ]
