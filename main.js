@@ -243,7 +243,7 @@ function createWindow() {
                                 buttons: ['Cancel', 'Yes, please', 'No, thanks'],
                                 defaultId: 2,
                                 title: 'Import database',
-                                message: 'Are you sure you want to import a database? It may override your information.',
+                                message: 'Are you sure you want to import a database? It will override any current information.',
                             };
     
                             let confirmation = dialog.showMessageBoxSync(BrowserWindow.getFocusedWindow(), options);
